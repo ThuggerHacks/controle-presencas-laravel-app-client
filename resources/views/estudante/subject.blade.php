@@ -137,6 +137,12 @@
                         </tr>
                     @endif
                   @endforeach
+                  <tr>
+                      <th colspan="1">Participa&ccedil;&atilde;o</th>
+                      <th colspan="3" class="text-end mr-3">
+                            {{(misses(session("student")->codigo_estudante,      $lessons->fk_codigo_curso_disciplina))}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      </th>
+                  </tr>
                 </tbody>
               </table>
         </div>
