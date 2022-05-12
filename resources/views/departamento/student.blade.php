@@ -49,13 +49,13 @@
                             <td>
                                 @foreach ($presenca as $linha)
                                     @if ($linha->fk_tbl_estudante_codigo_estudante == $students->fk_codigo_estudante)
-                                        <span class="fa fa-check"  id="check{{ $students->fk_codigo_estudante}}"></span>
+                                        {{(misses($students->codigo_estudante,      $students->codigo_curso_disciplina))}}
                                         @php($isChecked = 1)
                                     @endif
                                 @endforeach
                                
                                 @if ($isChecked == 0)
-                                    <span class="fa fa-times" id="check{{ $students->fk_codigo_estudante}}"></span>
+                                    {{(misses($students->codigo_estudante,      $students->codigo_curso_disciplina))}}
                                 @endif
                             </td>
                             <td>
