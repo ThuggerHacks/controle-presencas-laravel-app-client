@@ -24,16 +24,16 @@ class PresencaFuncionarioController extends Controller
 
         $user = $request->id;
 
-        $presence = PresencaFuncionario::where("codigo_funcionario",$user)->where("data_presenca",'LIKE',date("Y-m-d").' %')->first();
+        $presence = PresencaFuncionario::where("codigo_funcionario",$user)->where("data_presenca",'LIKE',date("Y-m-d").' %')->orWhere("data_presenca",'LIKE',$request->date."%")->first();
  
         if(!$presence){
             PresencaFuncionario::create([
                 "codigo_funcionario" => $user,
-                "entrada" => date("H:i:s"),
-                "saida" => null
+                "entrada" => $request->entrada != null ?$request->entrada:date("H:i:s"),
+                "saida" => $request->saida!=null?$request->saida:null
             ]);
         }else if($presence->saida == null){
-            $presence->update(["saida" => date("H:i:s")]);
+            $presence->update(["saida" => $request->saida!=null?$request->saida:null]);
         }else{
             return response()->json(["success" => "Ja assinou 2 vezes hoje!"]);
         }
@@ -65,7 +65,7 @@ class PresencaFuncionarioController extends Controller
         }
 
       if($worker->saida == null && $worker->entrada != null){
-        $time = date("H:i:s");
+        $time = $request->time == null ? date("H:i:s"):$request->time;
 
             $timer = Timer::where("id_presenca",$worker->codigo_presenca)->where("hora",$time)->get();
 

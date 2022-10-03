@@ -18,11 +18,11 @@ class isProxy
     public function handle(Request $request, Closure $next)
     {
 
-        $data = Http::get("http://api.isproxyip.com/v1/check.php?key=DsoD1Oe8tbI9HMWK7i30AVyRegfQD73QUQdi5jOAhJgrcJi3xJ&ip=".\Request::ip()."&format=json");
+        // $data = Http::get("http://api.isproxyip.com/v1/check.php?key=DsoD1Oe8tbI9HMWK7i30AVyRegfQD73QUQdi5jOAhJgrcJi3xJ&ip=".\Request::ip()."&format=json");
 
-        if($data['proxy'] == 1){
-            return response()->json(["error" => "Por favor desligue o proxy para se conectar"]);
-        }
+        // if($data['proxy'] == 1){
+        //     return response()->json(["error" => "Por favor desligue o proxy para se conectar"]);
+        // }
         return $next($request);
     }
 }
