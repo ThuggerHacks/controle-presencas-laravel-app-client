@@ -9,7 +9,7 @@
         <div class="modal-body">
           <div >
             <div class="card p-4 d-flex align-items-center">
-              <form action="{{route("teacher.msg")}}" method="post">
+              <form action="{{route("student.msg")}}" method="post">
                   @csrf
                   <div >
                       <div >
@@ -29,7 +29,7 @@
       
                       </div>
                       <input type="hidden" name="sendfeed" id="sendfeed">
-                      <input type="hidden" name="cadeira" id="idcadeira">
+                      <input type="hidden" name="aula" id="idaula">
                   </div>
                   <button type="submit" class="btn btn-primary">
                     <span>

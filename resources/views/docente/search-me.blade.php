@@ -8,14 +8,14 @@
 
 
 <div class="container my-5">
-    <a href="{{ route("teacher.subject",["cadeira" => $cadeira])}}" class="mb-2" style="text-decoration: none;display:flex;align-items:flex-end;">
+    <a href="{{ route("teacher.presence",["cadeira" => $cadeira])}}" class="mb-2" style="text-decoration: none;display:flex;align-items:flex-end;">
         <span class="fa fa-chevron-left" style="font-size: 14px;position:relative;top:0.5px"></span>
         {{-- <span class="fa fa-home" ></span> --}}
         <span style="font-size: 12px;position: relative;top:3px">&nbsp;Voltar</span>
     </a>
 
     @if (session("message"))
-        <div class="alert alert-info text-center">{{ session("message")}}</div>
+        <div class="alert alert-info">{{ session("message")}}</div>
     @elseif(session("error"))
         <div class="alert alert-danger text-center">{{ session("error") }}</div>
     @endif

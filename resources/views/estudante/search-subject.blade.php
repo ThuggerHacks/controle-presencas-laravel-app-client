@@ -8,11 +8,18 @@
 
 
 <div class="container my-5">
-    <a href="{{ route("dep.home")}}" class="mb-2" style="text-decoration: none;display:flex;align-items:flex-end;">
+    <a href="{{ route("student.home") }}" class="mb-2" style="text-decoration: none;display:flex;align-items:flex-end;">
         <span class="fa fa-chevron-left" style="font-size: 14px;position:relative;top:0.5px"></span>
         {{-- <span class="fa fa-home" ></span> --}}
         <span style="font-size: 12px;position: relative;top:3px">&nbsp;Voltar</span>
     </a>
+
+
+    @if (session("message"))
+        <div class="alert alert-info text-center">{{ session("message") }}</div>
+    @elseif(session("error"))
+        <div class="alert alert-danger text-center">{{session("error")}} </div>
+    @endif
     @foreach ($disciplina as $disc)
         <div class="card mb-5 my-3">
             <div class="card-header text-center bg-primary text-light">
@@ -32,11 +39,11 @@
                             <strong>N&uacute;mero de horas da disciplina: </strong> <span>{{ $disc->hora_total_disciplina}}h</span>
                         </div>
                     </div>
-                    <div class="row col-md-12 py-2" style="border-top:1px solid #ebebeb;border-bottom:1px solid #ebebeb;">
+                    <div class="row col-md-12 py-2" style="border-top:1px solid #ebebeb;">
                         @foreach ($horario as $time)
-                      
+                    
                             <div class="col-md-2">
-                              @switch($time->dia_semana)
+                            @switch($time->dia_semana)
                                     @case(1)
                                         <strong>Segunda-feira: </strong><br> <span>{{ $time->inicio }} - {{ $time->termino}}</span>
                                     @break
@@ -52,31 +59,30 @@
                                     @case(5)
                                         <strong>Sexta-feira: </strong> <br><span>{{ $time->inicio }} - {{ $time->termino}}</span>
                                     @break
-                                  @default
+                                @default
                                     <strong>#: </strong> 
-                                      
-                              @endswitch
+                                    
+                            @endswitch
 
                             </div>
                         @endforeach
                     </div>
                 </div>
-                <!--------------timetable---->
-                <button class="btn btn-primary my-2 text-light ml-2 mr-2" data-bs-target="#timetable" data-bs-toggle="modal">
-                    <span class="fa fa-table"></span>
-                    <span>Alterar Horario</span>
-                </button>
+                
                 
             </div>
-            
+        
         </div>
         @break
     @endforeach
 
+    
+
+
     <div class="row my-3 mb-4">
         <div class="col-md-8"></div>
         <div class="col-md-4">
-            <form action="{{ route("dep.subject.search") }}" method="post" class=" d-flex"  style="width:100%">
+            <form action="{{ route("student.subject.search") }}" method="post" class=" d-flex"  style="width:100%">
                 @csrf
                 <input type="date" name="ano" id="" class="form-control " placeholder="Pesquisar" min="2009/12/31">
                 &nbsp;<button class="btn btn-primary ml-2">
@@ -94,55 +100,41 @@
                 <thead>
                   <tr>
                     <th scope="col">Data</th>
-                    <th scope="col">Topico</th>
+                    <th>Topico</th>
                     <th scope="col">Presente</th>
-                    <th scope="col">Marcar</th>
                     <th>
                         <span class="fa fa-plus"></span>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                    @foreach ($presenca as $presence)
-                        @if ($presence->tema_aula)
-                            <tr>
-                                <th>{{ $presence->data_aula}}</th>
-                                    <td>{{ $presence->tema_aula}}</td>
-                                <td>
-                                    <span class="fa fa-check"></span>
-                                </td>
-                               
-                                <td>
-                                    <input type="checkbox" name="" id="" checked disabled>
-                                </td>
-                                <td>
-                                    @if($presence->tema_aula != "Aula justificada")
-                                        <a href="{{ route("dep.student",["id_aula" => base64_encode($presence->codigo_aula),"id_disciplina" => base64_encode($presence->fk_codigo_curso_disciplina)])}}" class="btn btn-light">
-                                            <span class="fa fa-plus"></span>
-                                        </a>
-                                    
-                                    @else
-                                        <a class="btn btn-light">#</a>
-                                    @endif
-                                </td>
-                            </tr>
-
-                        @else
-                            <tr>
-                                <th>{{ $presence->data_aula}}</th>
-                                    <td>---</td>
-                                <td>
+                  
+                  @foreach ($aula as $lessons)
+                    @if ($lessons->tema_aula != "Aula justificada")
+                        <tr>
+                            <th>{{ $lessons->data_aula }}</th>
+                            <td>{{ $lessons->tema_aula }}</td>
+                            <td>
+                            @if (isAbsent(session("student")->codigo_estudante,$lessons->codigo_aula) && $lessons->data_aula )
                                     <span class="fa fa-times"></span>
-                                </td>
-                               
-                                <td>
-                                    <input type="checkbox" name="" id="" onclick="addPresence('{{$presence->codigo_aula}}')">
-                                </td>
-                                <td>
-                                    <a class="btn btn-light">#</a>
-                                </td>
-                            </tr> 
-                        @endif
+                                @else
+                                    <span class="fa fa-check"></span>
+                            @endif
+                            </td>
+                            <td>
+                                @if (isAbsent(session("student")->codigo_estudante,$lessons->codigo_aula))
+                                    <button class="btn btn-light" data-bs-target="#feedback" data-bs-toggle="modal" onclick="openSendMailModal('{{ $lessons->codigo_aula }}')">
+                                        <span class="fa fa-envelope"></span>
+                                    </button>
+                                @else
+                                    <button class="btn btn-light"  >
+                                        <span class="fa fa-check"></span>
+                                    </button>
+                                @endif
+                            
+                            </td>
+                        </tr>
+                    @endif
                   @endforeach
                 </tbody>
               </table>
@@ -150,32 +142,14 @@
     </div>
 </div>
 
-<x-time-table-modal :cadeira="$cadeira"></x-time-table-modal>
+
+<x-student-feed-back-modal></x-student-feed-back-modal>
 
 <script>
+    const openSendMailModal = (idAula) => {
+        let aula = document.querySelector("#idaula");
+        aula.value = idAula;
+    }    
+</script>        
 
-    const addPresence = async(id) => {
-        if(id){
-            const cnf = confirm("Continuar ?");
-
-            if(cnf){
-                const explain = await axios.post("/explain",{id});
-
-                if(explain.data){
-                    if(explain.data.error){
-                        alert(explain.data.error);
-                    }else{
-                        window.open(window.location.href,"_self");
-                    }
-                }else{  
-                    alert("Houve um erro");
-                }
-            }
-        }
-    }
-
-</script>
-
-        
-
-@endsection 
+@endsection

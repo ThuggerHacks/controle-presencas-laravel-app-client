@@ -9,14 +9,21 @@
 
           <div class="d-flex align-items-center">
 
-           
-
             <div class="dropdown">
                 <button style="border: none" class="d-flex align-items-center btn text-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
                         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
                     </svg>
-                    <strong class="text-light mr-auto">Braimo</strong>
+                    <strong class="text-light mr-auto">
+                    
+                            @if(session("dep"))
+                                {{session("dep")->nome_usuario_departamento}}
+                            @elseif (session("teacher"))
+                                {{session("teacher")->nome_docente}}
+                            @elseif(session("student"))
+                                {{session("student")->nome_estudante}}
+                            @endif
+                    </strong>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                   <li>
@@ -31,8 +38,8 @@
                         </a>
                     </li>
 
-                    <li data-bs-toggle="modal" data-bs-target="#studentinfo">
-                      <a class="dropdown-item d-flex align-items-center" href="#" class="text-light" style="text-decoration:none">
+                    {{-- <li data-bs-toggle="modal" data-bs-target="#studentinfo">
+                      <a class="dropdown-item d-flex align-items-center" href="#" class="text-light" style="text-decoration:none" onclick="showInfo()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
                             <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
                         </svg>
@@ -41,6 +48,7 @@
                         </span>
                         </a>
                     </li>
+                  
 
                     <li >
                         <a class="dropdown-item d-flex align-items-center" href="/messages" class="text-light" style="text-decoration:none">
@@ -49,11 +57,10 @@
                               Mensagens
                           </span>
                           </a>
-                      </li>
+                      </li> --}}
                 </ul>
               </div>
    
           </div>
     </div>
 </nav>
-<x-student-info-modal></x-student-info-modal>

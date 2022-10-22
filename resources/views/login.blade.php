@@ -3,7 +3,7 @@
 @section("title", "Login")
 
 @section("content")
-    <form action="#" method="post">
+    <form action="{{ route("login.all")}}" method="post">
         @csrf
         <div class="content-uz">
            
@@ -12,8 +12,8 @@
                     <img src="{{asset("assets/images/logo.png")}}" alt="" class="img-fluid uz-login-logo">
                     
                 </div><br/>
-                @if (session("message"))
-                    <div class="alert alert-danger p-2 text-center">{{session("message")}}</div>
+                @if (session("error"))
+                    <div class="alert alert-danger p-2 text-center">{{session("error")}}</div>
                 @endif
                 <div class="input-group">
                     <span class="input-group-text bg-transparent border-end-0" id="basic-addon1">
@@ -21,7 +21,7 @@
                             <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
                         </svg>
                     </span>
-                    <input type="text" name="numero" id="numero" placeholder="Número de celular" class="form-control border-start-0">
+                    <input type="text" name="numero" id="numero" placeholder="Codigo de utilizador" class="form-control border-start-0">
                 </div>
                 <br/>
                 <div class="input-group">
@@ -31,7 +31,7 @@
                             <path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415z"/>
                           </svg>
                     </span>
-                    <input type="password" name="senha" id="senha" placeholder="senha" class="form-control border-start-0">
+                    <input type="password" name="pass" id="senha" placeholder="senha" class="form-control border-start-0">
                 </div>
                 <br/>
                 <button class="btn btn-primary">Entrar</button>

@@ -47,6 +47,18 @@ table {
 .search {
     justify-content: flex-end !important;
 }
+
+.card {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border: none !important;
+}
+
+@media screen and (min-width: 992px) {
+    .col-md-2 {
+        width: 20% !important;
+    }
+}
+
 @media screen and (max-width: 767px) {
     .w-25 {
         width: 100% !important;
@@ -60,4 +72,16 @@ table {
         width: 100% !important;
         padding: 10px !important;
     }
+}
+
+#loader {
+    position: absolute !important;
+    background-color: white;
+    z-index: 999999999999999;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
 }

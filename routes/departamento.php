@@ -3,25 +3,24 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartamentoController;
 
-Route::get('/departamento/home',[DepartamentoController::class,"index"])->name("dep.home");
+Route::middleware('dep.auth')->group(function () {
 
-Route::get('/departamento/subject',[DepartamentoController::class,"subject"])->name("dep.subject");
+    Route::get('/departamento/home',[DepartamentoController::class,"index"])->name("dep.home");
 
-Route::get('/departamento/student', [DepartamentoController::class,"student"])->name("dep.student");
+    Route::get('/departamento/subject/{cadeira?}/{ano?}',[DepartamentoController::class,"subject"])->name("dep.subject");
 
-Route::get('/departamento/login',[DepartamentoController::class,"loginView"])->name("dep.login.view");
+    Route::get('/departamento/student/{id_disciplina?}/{id_aula?}', [DepartamentoController::class,"check"])->name("dep.student");
 
-//mobile
-Route::get('/departamento/workers',[DepartamentoController::class,"mobileView"])->name("dep.mobile.view")->middleware("auth.dep");
+    Route::get("/subjects/{id?}",[DepartamentoController::class,"subjectByCourse"]);
 
-Route::get('/departamento/workers/{id?}',[DepartamentoController::class,"mobilePresence"])->name("dep.mobile.presence")->middleware("auth.dep");
+    Route::post("dep/search/teacher",[DepartamentoController::class,"searchTeacherSubject"])->name("search.dep.all");
 
-Route::get('/departamento/timer/{id?}/{user_id?}',[DepartamentoController::class,"mobileTimer"])->name("dep.mobile.timer")->middleware("auth.dep");
+    Route::post("/addtimetable",[DepartamentoController::class,"addTimeTable"]);
 
+    Route::post("/explain",[DepartamentoController::class,"addPresence"]);
 
-Route::post('/departamento/search/{id?}',[DepartamentoController::class,"mobileSearch"])->name("dep.mobile.search")->middleware("auth.dep");
+    Route::post("/dep/addpresence",[DepartamentoController::class,"addPresenceStudent"]);
 
-Route::put('/departamento/fingerprint/{id?}',[DepartamentoController::class,"mobileFingerPrint"])->name("dep.mobile.fingerprint")->middleware("auth.dep");
-//end
+    Route::post('/departamento/seach/subject',[DepartamentoController::class,"subjectSearch"])->name("dep.subject.search");
 
-Route::post("/departamento/login",[DepartamentoController::class,"login"])->name("dep.login");
+});

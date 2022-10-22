@@ -11,9 +11,12 @@ class AddTopicModal extends Component
      *
      * @return void
      */
-    public function __construct()
+
+    public $cadeira;
+
+    public function __construct($cadeira)
     {
-        //
+        $this->cadeira = $cadeira;
     }
 
     /**

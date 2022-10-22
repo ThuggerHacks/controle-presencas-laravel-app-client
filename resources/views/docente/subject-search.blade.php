@@ -8,7 +8,7 @@
 
 
 <div class="container my-5">
-    <a href="{{ route("dep.home")}}" class="mb-2" style="text-decoration: none;display:flex;align-items:flex-end;">
+    <a href="{{ route("teacher.subject",["cadeira" => $cadeira])}}" class="mb-2" style="text-decoration: none;display:flex;align-items:flex-end;">
         <span class="fa fa-chevron-left" style="font-size: 14px;position:relative;top:0.5px"></span>
         {{-- <span class="fa fa-home" ></span> --}}
         <span style="font-size: 12px;position: relative;top:3px">&nbsp;Voltar</span>
@@ -20,7 +20,7 @@
                 <span>{{ $disc->nome_disciplina}}</span>
             </div>
             <div class="card-body" >
-                <div id="home">
+                <div id="home" class="mb-3">
                     <div class="col-md-12 row">
                         <div  class="col-md-4">
                             <strong>Nome do docente: </strong> <span>{{ $disc->nome_docente }}</span>
@@ -62,21 +62,26 @@
                     </div>
                 </div>
                 <!--------------timetable---->
-                <button class="btn btn-primary my-2 text-light ml-2 mr-2" data-bs-target="#timetable" data-bs-toggle="modal">
-                    <span class="fa fa-table"></span>
-                    <span>Alterar Horario</span>
+                <button class="btn btn-primary " data-bs-target="#topic" data-bs-toggle="modal">
+                    <span class="fa fa-plus"></span>
+                    <span>Novo Topico</span>
                 </button>
+                <a href="{{route("teacher.presence",["cadeira" => urlencode(base64_encode($disc->codigo_curso_disciplina))])}}" class="btn btn-outline-primary">
+                    <span class="fa fa-user"></span>
+                    <span>Minhas presen&ccedil;as</span>
+                </a>
                 
             </div>
-            
-        </div>
+           
+        </div> 
         @break
     @endforeach
+   
 
     <div class="row my-3 mb-4">
         <div class="col-md-8"></div>
         <div class="col-md-4">
-            <form action="{{ route("dep.subject.search") }}" method="post" class=" d-flex"  style="width:100%">
+            <form action="{{ route("teacher.subject.search") }}" method="post" class=" d-flex"  style="width:100%">
                 @csrf
                 <input type="date" name="ano" id="" class="form-control " placeholder="Pesquisar" min="2009/12/31">
                 &nbsp;<button class="btn btn-primary ml-2">
@@ -95,87 +100,33 @@
                   <tr>
                     <th scope="col">Data</th>
                     <th scope="col">Topico</th>
-                    <th scope="col">Presente</th>
                     <th scope="col">Marcar</th>
-                    <th>
-                        <span class="fa fa-plus"></span>
-                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                    @foreach ($presenca as $presence)
-                        @if ($presence->tema_aula)
-                            <tr>
-                                <th>{{ $presence->data_aula}}</th>
-                                    <td>{{ $presence->tema_aula}}</td>
-                                <td>
-                                    <span class="fa fa-check"></span>
-                                </td>
-                               
-                                <td>
-                                    <input type="checkbox" name="" id="" checked disabled>
-                                </td>
-                                <td>
-                                    @if($presence->tema_aula != "Aula justificada")
-                                        <a href="{{ route("dep.student",["id_aula" => base64_encode($presence->codigo_aula),"id_disciplina" => base64_encode($presence->fk_codigo_curso_disciplina)])}}" class="btn btn-light">
-                                            <span class="fa fa-plus"></span>
-                                        </a>
-                                    
-                                    @else
-                                        <a class="btn btn-light">#</a>
-                                    @endif
-                                </td>
-                            </tr>
-
-                        @else
-                            <tr>
-                                <th>{{ $presence->data_aula}}</th>
-                                    <td>---</td>
-                                <td>
-                                    <span class="fa fa-times"></span>
-                                </td>
-                               
-                                <td>
-                                    <input type="checkbox" name="" id="" onclick="addPresence('{{$presence->codigo_aula}}')">
-                                </td>
-                                <td>
-                                    <a class="btn btn-light">#</a>
-                                </td>
-                            </tr> 
-                        @endif
-                  @endforeach
+                 @foreach ($presenca as $presence)
+                    @if ($presence->tema_aula && $presence->tema_aula != "Aula justificada")
+                        <tr>
+                            <th>{{ $presence->data_aula }}</th>
+                            <td>{{ $presence->tema_aula }}</td>
+                            <td>
+                            <a href="{{ route("teacher.check",["id_disciplina" => urlencode(base64_encode($presence->fk_codigo_curso_disciplina)),"id_aula" => urlencode(base64_encode($presence->codigo_aula))])}}" class="btn btn-light text-dark">
+                                <span class="fa fa-pencil"></span>
+                                <span>Marcar</span>
+                            </a>
+                            </td>
+                        </tr>
+                    @endif
+                 @endforeach
                 </tbody>
               </table>
         </div>
     </div>
 </div>
 
-<x-time-table-modal :cadeira="$cadeira"></x-time-table-modal>
+<x-add-topic-modal :cadeira="$cadeira"></x-add-topic-modal>
 
-<script>
-
-    const addPresence = async(id) => {
-        if(id){
-            const cnf = confirm("Continuar ?");
-
-            if(cnf){
-                const explain = await axios.post("/explain",{id});
-
-                if(explain.data){
-                    if(explain.data.error){
-                        alert(explain.data.error);
-                    }else{
-                        window.open(window.location.href,"_self");
-                    }
-                }else{  
-                    alert("Houve um erro");
-                }
-            }
-        }
-    }
-
-</script>
 
         
 
-@endsection 
+@endsection

@@ -27,7 +27,7 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         },
-        "files":["app/helpers/findname.helper.php"]
+        "files":["app/helpers/findname.helper.php","app/helpers/isAbsent.helper.php"]
     },
     "autoload-dev": {
         "psr-4": {

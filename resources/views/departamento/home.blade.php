@@ -8,56 +8,24 @@
 
     <div class="d-flex align-items-center justify-content-center">
 
-        <form action="#" method="post">
+        <form action="{{ route("search.dep.all")}}" method="post">
             @csrf
             <div class="content-uz">
                 <div class="card p-4 d-flex align-items-center" style="width: 600px">
-
+                    @if ($errors->any())
+                        <small class="alert alert-danger text-center" style="width:100%"> {{ $errors->all()[0]  }}</small>
+                    @endif
                     <div class="input-group w-100 mb-2">
 
                         <span class="input-group-text bg-transparent border-end-0" id="basic-addon1">
                             <i class="fa fa-clock"></i>
                         </span>
-                        <select name="tipo" class="form-select border-start-0"  id="form">
-                        <option name="" id="" selected>Selecionar ano</option>
-                        <option value="estagio">2013</option>
-                        <option value="certificado">2014</option>
-                        <option value="notas">2015</option>
-                        <option value="bolsa">2016</option>
-                        <option value="bolsa">2017</option>
-                        <option value="bolsa">2018</option>
-                        <option value="bolsa">2019</option>
-                        <option value="bolsa">2020</option>
-                        </select>
-                       
-
-                    </div>
-
-                    <div class="input-group w-100 mb-2">
-
-                        <span class="input-group-text bg-transparent border-end-0" id="basic-addon1">
-                            <i class="fa fa-book-open"></i>
-                        </span>
-                        <select name="tipo" class="form-select border-start-0"  id="form">
-                        <option name="" id="" selected>Selecionar nivel</option>
-                        <option value="estagio">1</option>
-                        <option value="certificado">2</option>
-                        <option value="notas">3</option>
-                        <option value="bolsa">4</option>
-                        </select>
-                       
-
-                    </div>
-                    
-                    <div class="input-group w-100 mb-2">
-
-                        <span class="input-group-text bg-transparent border-end-0" id="basic-addon1">
-                            <i class="fa fa-pen"></i>
-                        </span>
-                        <select name="tipo" class="form-select border-start-0"  id="form">
-                        <option name="" id="" selected>Selecionar semestre</option>
-                        <option value="estagio">1</option>
-                        <option value="certificado">2</option>
+                        <select  name="ano" class="form-select border-start-0"  id="form">
+                            <option value="" selected>Selecionar ano</option>
+                            @for ($i = date("Y"); $i >= 2009 ; $i--)
+                                <option value="{{$i}}">{{ $i }}</option>
+                            @endfor
+                        
                         </select>
                        
 
@@ -68,12 +36,11 @@
                         <span class="input-group-text bg-transparent border-end-0" id="basic-addon1">
                             <i class="fa fa-graduation-cap"></i>
                         </span>
-                        <select name="tipo" class="form-select border-start-0"  id="form">
-                        <option name="" id="" selected>Selecionar curso</option>
-                        <option value="estagio">Engenharia Informatica</option>
-                        <option value="certificado">Engenharia Civil</option>
-                        <option value="notas">Engenharia Mecatronica</option>
-                        <option value="bolsa">Engenharia de processos</option>
+                        <select class="form-select border-start-0" name="curso" id="form" onchange="selectCourse(this.value)">
+                            <option  value="" selected>Selecionar curso</option>
+                            @foreach ($curso as $cursos)
+                                <option value="{{ $cursos['codigo_curso']}}">{{ $cursos["nome_curso"] }}</option>
+                            @endforeach
                         </select>
                        
 
@@ -84,14 +51,8 @@
                         <span class="input-group-text bg-transparent border-end-0" id="basic-addon1">
                             <i class="fa fa-book"></i>
                         </span>
-                        <select name="tipo" class="form-select border-start-0"  id="form">
-                            <option name="" id="" selected>Selecionar cadeira</option>
-                            <option value="estagio">SIOP</option>
-                            <option value="certificado">INAR</option>
-                            <option value="certificado">SIIF</option>
-                            <option value="certificado">MEPP</option>
-                            <option value="certificado">PRCO</option>
-                            <option value="certificado">ENSOWII</option>
+                        <select class="form-select border-start-0"  name="cadeira" id="chairs">
+                            <option  value="" selected>Selecionar cadeira</option>
                         </select>
                        
 
@@ -110,5 +71,22 @@
         </form>
     </div>
    
+    <script>
+
+        const selectCourse = async(e) => {
+           const data = await fetch("/subjects/"+e);
+           const result = await data.json();
+            let subjets = document.querySelector("#chairs");
+            subjets.innerHTML = "";
+            let opt;
+           result.map((data) => {
+            opt = document.createElement("option");
+            opt.value = data.codigo_curso_disciplina;
+            opt.textContent = data.nome_disciplina;
+            subjets.appendChild(opt)
+           })
+           
+        }
+    </script>
 
 @endsection

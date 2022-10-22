@@ -8,7 +8,7 @@
 
     <div class="d-flex align-items-center justify-content-center">
 
-        <form action="#" method="post">
+        <form  action="{{ route("search.teacher.all") }}" method="post">
             @csrf
             <div class="content-uz">
                 <div class="card p-4 d-flex align-items-center" style="width: 600px">
@@ -16,87 +16,27 @@
                     <div class="input-group w-100 mb-2">
 
                         <span class="input-group-text bg-transparent border-end-0" id="basic-addon1">
-                            <i class="fa fa-clock"></i>
+                            <i class="fa fa-book"></i>
                         </span>
-                        <select name="tipo" class="form-select border-start-0"  id="form">
-                        <option name="" id="" selected>Selecionar ano</option>
-                        <option value="estagio">2013</option>
-                        <option value="certificado">2014</option>
-                        <option value="notas">2015</option>
-                        <option value="bolsa">2016</option>
-                        <option value="bolsa">2017</option>
-                        <option value="bolsa">2018</option>
-                        <option value="bolsa">2019</option>
-                        <option value="bolsa">2020</option>
+                        <select class="form-select border-start-0" name="curso" id="curso" onchange="selectCourse(this.value)">
+                            <option  value="" selected>Selecionar curso</option>
+                            @foreach ($curso as $cursos)
+                                <option value="{{ $cursos['codigo_curso']}}">{{ $cursos["nome_curso"] }}</option>
+                            @endforeach
                         </select>
                        
 
                     </div>
-
-                    <div class="input-group w-100 mb-2">
-
-                        <span class="input-group-text bg-transparent border-end-0" id="basic-addon1">
-                            <i class="fa fa-book-open"></i>
-                        </span>
-                        <select name="tipo" class="form-select border-start-0"  id="form">
-                        <option name="" id="" selected>Selecionar nivel</option>
-                        <option value="estagio">1</option>
-                        <option value="certificado">2</option>
-                        <option value="notas">3</option>
-                        <option value="bolsa">4</option>
-                        </select>
-                       
-
-                    </div>
-                    
-                    <div class="input-group w-100 mb-2">
-
-                        <span class="input-group-text bg-transparent border-end-0" id="basic-addon1">
-                            <i class="fa fa-pen"></i>
-                        </span>
-                        <select name="tipo" class="form-select border-start-0"  id="form">
-                        <option name="" id="" selected>Selecionar semestre</option>
-                        <option value="estagio">1</option>
-                        <option value="certificado">2</option>
-                        </select>
-                       
-
-                    </div>
-
-                    <div class="input-group w-100 mb-2">
-
-                        <span class="input-group-text bg-transparent border-end-0" id="basic-addon1">
-                            <i class="fa fa-graduation-cap"></i>
-                        </span>
-                        <select name="tipo" class="form-select border-start-0"  id="form">
-                            <option name="" id="" selected>Selecionar curso</option>
-                            <option value="estagio">Engenharia Informatica</option>
-                            <option value="certificado">Engenharia Civil</option>
-                            <option value="certificado">Engenharia de processos</option>
-                            <option value="certificado">Engenharia Ambiental</option>
-                            <option value="certificado">Engenharia Mecanica</option>
-                            <option value="certificado">Engenharia Mecatronica</option>
-                        </select>
-                       
-
-                    </div>
-
 
                     <div class="input-group w-100 mb-2">
 
                         <span class="input-group-text bg-transparent border-end-0" id="basic-addon1">
                             <i class="fa fa-book"></i>
                         </span>
-                        <select name="tipo" class="form-select border-start-0"  id="form">
-                            <option name="" id="" selected>Selecionar cadeira</option>
-                            <option value="estagio">SIOP</option>
-                            <option value="certificado">INAR</option>
-                            <option value="certificado">SIIF</option>
-                            <option value="certificado">MEPP</option>
-                            <option value="certificado">PRCO</option>
-                            <option value="certificado">ENSOWII</option>
+                        <select class="form-select border-start-0"  name="cadeira" id="chairs">
+                            <option  value="" selected>Selecionar cadeira</option>
                         </select>
-                       
+                        <input type="hidden" id="teacher" value="{{ session("teacher")->codigo_docente }}">
 
                     </div>
 
@@ -113,5 +53,30 @@
         </form>
     </div>
    
+    <script>
+
+        const selectCourse = async(e) => {
+           const data = await axios.get("/teacher/subjects/"+e);
+            let subjets = document.querySelector("#chairs");
+            let teacher = document.querySelector("#teacher");
+            let course = document.querySelector("#curso");
+   
+            subjets.innerHTML = "";
+            let opt;
+
+          if(data){
+        
+            data.data.map((result) => {
+                if(result.fk_codigo_docente == teacher.value){
+                    opt = document.createElement("option");
+                    opt.value = result.codigo_curso_disciplina;
+                    opt.textContent = result.nome_disciplina;
+                    subjets.appendChild(opt)
+                }
+           })
+          }
+           
+        }
+    </script>
 
 @endsection

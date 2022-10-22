@@ -4,19 +4,16 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class timeTableModal extends Component
+class student-feed-back-modal extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-
-    public $cadeira;
-
-    public function __construct($cadeira)
+    public function __construct()
     {
-        $this->cadeira = $cadeira;
+        //
     }
 
     /**
@@ -26,6 +23,6 @@ class timeTableModal extends Component
      */
     public function render()
     {
-        return view('components.time-table-modal');
+        return view('components.student-feed-back-modal');
     }
 }

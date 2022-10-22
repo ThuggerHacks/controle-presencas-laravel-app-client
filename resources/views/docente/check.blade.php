@@ -1,136 +1,155 @@
 @extends("layouts.layout")
 
-@section("title","Presenca")
+@section("title","Home")
 
 @section("content")
 
 @include("_partials.navbar")
 
-<div class="container my-4">
 
-    <div class="table-responsive">
-        <table class="table table-hover table-bordered border-primary text-center">
-            <thead>
-                <tr>
-                    <td colspan="4">
-                        <form>
-                            <div class="container d-flex px-5 search" >
-                                <div class="input-group w-25 mb-2">
-                                    <input type="search" name="" id="" class="form-control" placeholder="Pesquisar">
-                                    <button class="input-group-text bg-primary btn border-end-0" id="basic-addon1">
-                                        <i class="fa fa-search text-light"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </td>
-                </tr>
-              <tr class="bg-primary text-light">
-                <th scope="col">Nome do estudante</th>
-                <th scope="col">Presente</th>
-                <th scope="col">Marcar</th>
-                <th scope="col">Mais</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr >
-                <td>Belcio Armando</td>
-                <td>
-                    <i class="fa fa-check"></i>
-                </td>
-                <td class="text-center">
-                    <input type="checkbox" name="" id="" class="form-check-input" checked>
-                </td>
-                <td class="text-center">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#studentinfo" >
-                        <span>
-                            <i class="fa fa-add"></i>
-                        </span>
-                        <span>Informa&ccedil;&atilde;o</span>
-                    </button>
-                </td>
-              </tr>
-              <tr >
-                <td>Braimo Selimane</td>
-                <td>
-                    <i class="fa fa-times"></i>
-                </td>
-                <td class="text-center">
-                    <input type="checkbox" name="" id="" class="form-check-input">
-                </td>
-                <td class="text-center">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#studentinfo" >
-                        <span>
-                            <i class="fa fa-add"></i>
-                        </span>
-                        <span>Informa&ccedil;&atilde;o</span>
-                    </button>
-                </td>
-              </tr>
-              <tr >
-                <td>Renato Meque</td>
-                <td>
-                    <i class="fa fa-check"></i>
-                </td>
-                <td class="text-center">
-                    <input type="checkbox" name="" id="" class="form-check-input" checked>
-                </td>
-                <td class="text-center">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#studentinfo" >
-                        <span>
-                            <i class="fa fa-add"></i>
-                        </span>
-                        <span>Informa&ccedil;&atilde;o</span>
-                    </button>
-                </td>
-              </tr>
-              
-              <tr  >
-                <td>Keven Jose</td>
-                <td>
-                    <i class="fa fa-times"></i>
-                </td>
-                <td class="text-center">
-                    <input type="checkbox" name="" id="" class="form-check-input" >
-                </td>
-                <td class="text-center">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#studentinfo" >
-                        <span>
-                            <i class="fa fa-add"></i>
-                        </span>
-                        <span>Informa&ccedil;&atilde;o</span>
-                    </button>
-                </td>
-              </tr>
-
-              <tr >
-                <td>Kelven Bulha</td>
-                <td>
-                    <i class="fa fa-check"></i>
-                </td>
-                <td class="text-center">
-                    <input type="checkbox" name="" id="" class="form-check-input" checked>
-                </td>
-                <td class="text-center">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#studentinfo" >
-                        <span>
-                            <i class="fa fa-add"></i>
-                        </span>
-                        <span>Informa&ccedil;&atilde;o</span>
-                    </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <a class="btn btn-primary" href="#">
-            <span>
-                <i class="fa fa-chevron-left"></i>
+<div class="container my-5">
+    <a href="{{ route("teacher.subject",["cadeira" => $cadeira])}}" class="mb-2" style="text-decoration: none;display:flex;align-items:flex-end;">
+        <span class="fa fa-chevron-left" style="font-size: 14px;position:relative;top:0.5px"></span>
+        {{-- <span class="fa fa-home" ></span> --}}
+        <span style="font-size: 12px;position: relative;top:3px">&nbsp;Voltar</span>
+    </a>
+    <div class="card mb-5 my-3">
+        <div class="card-header text-center bg-primary text-light">
+            <strong>Nome da disciplina: </strong><span>
+                @foreach ($student as $students)
+                    {{ $students->nome_disciplina }}
+                    @break
+                @endforeach
             </span>
-            <span>Voltar</span>
-        </a>
+        </div>
     </div>
-    
+
+    <div class="card">
+       
+        <div class="card-body table-responsive">
+           
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Nome do estudante</th>
+                    <th scope="col">Presente</th>
+                    <th scope="col">Marcar</th>
+                    <th>
+                        <span class="fa fa-plus"></span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    
+                    @foreach ($student as $students)
+                        @php( $isChecked = 0)
+                        @php( $isChecked2 = 0)
+                        <tr>
+                            <th>{{ $students->nome_estudante }}</th>
+                            <td>
+                                @foreach ($presenca as $linha)
+                                    @if ($linha->fk_tbl_estudante_codigo_estudante == $students->fk_codigo_estudante)
+                                        <span class="fa fa-check"  id="check{{ $students->fk_codigo_estudante}}"></span>
+                                        @php($isChecked = 1)
+                                    @endif
+                                @endforeach
+                               
+                                @if ($isChecked == 0)
+                                    <span class="fa fa-times" id="check{{ $students->fk_codigo_estudante}}"></span>
+                                @endif
+                            </td>
+                            <td>
+                                @foreach ($presenca as $linha)
+                                    @if ($linha->fk_tbl_estudante_codigo_estudante == $students->fk_codigo_estudante)
+                                        <input type="checkbox" name="" id=""  checked onclick="addPresence({{ $students->fk_codigo_estudante}})">
+                                        @php($isChecked2 = 1)
+                                   @endif
+                               @endforeach
+                               @if ($isChecked2 == 0)
+                                    <input type="checkbox" name="" id="" onclick="addPresence({{ $students->fk_codigo_estudante}})">
+                               @endif
+                            </td>
+                            <td>
+                                <input type="hidden" name="" value="{{ $codigoAula }}" id="codigo_aula">
+                                
+                                <button class="btn btn-light" data-bs-target="#studentinfo" data-bs-toggle="modal" >
+                                    <span class="fa fa-info-circle" onclick="studentInfo('{{$students->fk_codigo_estudante}}','{{$students->nome_estudante}}','{{$students->email_estudante}}')"></span>
+                                </button>
+                            </td>
+                      </tr>
+                    @endforeach
+                </tbody>
+              </table>
+        </div>
+    </div>
 </div>
-    <x-student-info-modal></x-student-info-modal>
+
+<x-student-info-modal></x-student-info-modal>
+
+<script>
+    //presence add
+     let checked = true;
+
+    const addPresence = async(id) => {
+       let check = document.querySelector("#check"+id);
+       let codigoAula = document.querySelector("#codigo_aula");
+
+
+        const data = await axios.post("/addpresence",{codigoAula:codigoAula.value,codigoEstudante:id});
+
+        if(data){
+            if(data.data.msg){
+                if(checked){
+                    check.classList.remove("fa-xmark");
+                    check.classList.add("fa-check");
+                    checked = false;
+               
+                }else{
+                    check.classList.remove("fa-check");
+                    check.classList.add("fa-xmark");
+                    checked = true;
+                }
+            }else{
+                alert("Houve um erro")
+            }
+        }else{
+            alert("Houve um erro")
+        }
+       
+      
+    }    
+    
+    //student info
+
+    const studentInfo = (...data) => {
+
+       let name = document.querySelector("#namex");
+       let email = document.querySelector("#emailx");
+       let code = document.querySelector("#codex");
+    
+
+      setTimeout(() => {
+        name.textContent  = data[1];
+        email.textContent  = data[2];
+        code.textContent = data[0];
+      },500)
+       
+       
+    }
+
+
+const dismiss = () => {
+    let name = document.querySelector("#namex");
+    let email = document.querySelector("#emailx");
+    let code = document.querySelector("#codex");
+
+   setTimeout(() => {
+        name.textContent = "carregando...";
+        email.textContent = "carregando...";
+        code.textContent = "carregando...";
+   }, 500);
+
+}
+</script>        
 
 @endsection
