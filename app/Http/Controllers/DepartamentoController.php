@@ -35,6 +35,8 @@ class DepartamentoController extends Controller
         
         $cursos = Curso::where("fk_tbl_departamento_codigo_departamento",session("dep")->fk_tbl_departamento_codigo_departamento)->get();
 
+         DB::delete("DELETE FROM tbl_feriados WHERE full_date < ? && full_date <> ?", [date("Y/m/d"),""]);
+    
         return view('departamento.home',["curso" => $cursos]);
     }
 
@@ -54,7 +56,6 @@ class DepartamentoController extends Controller
 
         return view('departamento.subject',["disciplina" => $disciplina,"horario" => $horario, "presenca" => $presenca,"cadeira" => $cadeira]);
     }
-
 
     public function login(Request $request){
 
@@ -189,4 +190,27 @@ class DepartamentoController extends Controller
         return view('departamento.search-subject',["disciplina" => $disciplina,"horario" => $horario, "presenca" => $presenca,"cadeira" => $cadeira]);
     }
 
+    public function addHoliday(Request $request) {
+
+        $date = $request->date;
+
+        $explode = explode("-",$date);
+        $holiday = $explode[1]."/".$explode[2];
+        $full_date = $explode[0]."/".$explode[1]."/".$explode[2];
+
+        if($explode[0] && $explode[1] && $explode[2]){
+            $check = DB::select("SELECT * FROM tbl_feriados WHERE data_feriado = ?", [$holiday]);
+
+            if($check){
+                return redirect()->back()->with("error","Esta data ja esta cadastrada como um feriado");
+            }
+
+            DB::insert("INSERT INTO tbl_feriados (data_feriado,full_date) VALUES(?,?)", [$holiday,$full_date]);
+
+            return redirect()->back()->with("success","Novo feriado inserido");
+
+        }else{
+            return redirect()->back()->with("error","Por favor selecione uma data");
+        }
+    }
 }

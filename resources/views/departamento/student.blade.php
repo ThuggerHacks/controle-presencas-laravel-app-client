@@ -110,10 +110,10 @@
                     checked = true;
                 }
             }else{
-                alert("Houve um erro")
+                toast("Houve um erro","error")
             }
         }else{
-            alert("Houve um erro")
+            toast("Houve um erro","error")
         }
        
       

@@ -138,13 +138,15 @@
        
           myLatitude = position.coords.latitude;
           myLongitude = position.coords.longitude;
-          //console.log(myLatitude)
+          console.log(myLatitude)
+          console.log(myLongitude)
           if(isInsideArea(myLatitude, myLongitude)){
           let subject = document.querySelector("#subject").value;
           let chairs = document.querySelector("#chairs").value;
 
           if(subject.trim().length == 0){
-            alert("Por favor preencha o campo")
+           
+            toast("Por favor preencha o campo","error")
           }else{
             const cnf = confirm("Continuar ?");
             
@@ -156,20 +158,20 @@
                   window.open(window.location.href,"_self");
                 }else{ 
                   if(send.data.error){
-                    alert(send.data.error)
+                    toast(send.data.error,"error")
                   }else{
-                    alert("Houve um erro");
+                    toast("Houve um erro","error");
                   } 
                 
                 }
               }
           }
         }else{
-          alert("Impossivel adicionar tema estando fora da universidade");
+          toast("Impossivel adicionar tema estando fora da universidade","error")
         }
 
       }, err => {
-         alert("Nao foi possivel encontrar a sua localizacao, tente novamente")
+        toast("Nao foi possivel encontrar a sua localizacao, tente novamente","error")
       },
       {
           enableHighAccuracy:true,

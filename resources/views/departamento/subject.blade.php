@@ -163,12 +163,12 @@
 
                 if(explain.data){
                     if(explain.data.error){
-                        alert(explain.data.error);
+                        toast(explain.data.error,"error");
                     }else{
                         window.open(window.location.href,"_self");
                     }
                 }else{  
-                    alert("Houve um erro");
+                    toast("Houve um erro","error");
                 }
             }
         }

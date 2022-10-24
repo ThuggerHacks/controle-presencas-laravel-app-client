@@ -114,14 +114,14 @@
             for(let i = 0; i < dias.length; i++){
                 if(ini[i].value.trim().length > 0){
                     if(!ini[i].value.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/i)){
-                        alert("Por favor siga o seguinte formato para a hora: xx:xx:xx");
+                        toast("Por favor siga o seguinte formato para a hora: xx:xx:xx","error");
                         return;
                     }
                 }
 
                 if(fim[i].value.trim().length > 0){
                     if(!fim[i].value.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/i)){
-                        alert("Por favor siga o seguinte formato para a hora: xx:xx:xx");
+                        toast("Por favor siga o seguinte formato para a hora: xx:xx:xx","error");
                         return;
                     }
                 }
@@ -142,7 +142,7 @@
                     alert(data.data.errors)
                 }
             }else{
-               alert("Houve um erro")
+               toast("Houve um erro","error")
             }
           }
           

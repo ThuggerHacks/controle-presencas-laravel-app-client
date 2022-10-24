@@ -38,6 +38,17 @@
                         </a>
                     </li>
 
+                    @if (session("dep"))
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" data-bs-target="#holiday" data-bs-toggle="modal" class="text-light" style="text-decoration:none">
+                          <span class="fa fa-check"></span>
+                        <span class="ms-1">
+                            Marcar feriado
+                        </span>
+                          </a>
+                      </li>
+                    @endif
+
                     {{-- <li data-bs-toggle="modal" data-bs-target="#studentinfo">
                       <a class="dropdown-item d-flex align-items-center" href="#" class="text-light" style="text-decoration:none" onclick="showInfo()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
@@ -64,3 +75,5 @@
           </div>
     </div>
 </nav>
+
+<x-holiday-modal></x-holiday-modal>

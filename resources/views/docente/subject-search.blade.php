@@ -62,11 +62,11 @@
                     </div>
                 </div>
                 <!--------------timetable---->
-                <button class="btn btn-primary " data-bs-target="#topic" data-bs-toggle="modal">
+                <button class="btn btn-primary mb-2" data-bs-target="#topic" data-bs-toggle="modal">
                     <span class="fa fa-plus"></span>
                     <span>Novo Topico</span>
                 </button>
-                <a href="{{route("teacher.presence",["cadeira" => urlencode(base64_encode($disc->codigo_curso_disciplina))])}}" class="btn btn-outline-primary">
+                <a href="{{route("teacher.presence",["cadeira" => urlencode(base64_encode($disc->codigo_curso_disciplina))])}}" class="btn btn-outline-primary mb-2">
                     <span class="fa fa-user"></span>
                     <span>Minhas presen&ccedil;as</span>
                 </a>

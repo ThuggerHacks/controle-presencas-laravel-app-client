@@ -8,6 +8,11 @@
 
     <div class="d-flex align-items-center justify-content-center">
 
+        @if (session("error"))
+            <div class="alert alert-danger text-center my-2">{{ session("error") }}</div>
+        @elseif(session("success"))
+            <div class="alert alert-success text-center my-2">{{ session("success") }}</div>
+        @endif
         <form action="{{ route("search.dep.all")}}" method="post">
             @csrf
             <div class="content-uz">

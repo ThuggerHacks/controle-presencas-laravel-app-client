@@ -23,4 +23,6 @@ Route::middleware('dep.auth')->group(function () {
 
     Route::post('/departamento/seach/subject',[DepartamentoController::class,"subjectSearch"])->name("dep.subject.search");
 
+    Route::post('/holiday/set',[DepartamentoController::class,"addHoliday"])->name("dep.holiday");
+
 });
