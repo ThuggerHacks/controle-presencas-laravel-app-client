@@ -131,8 +131,6 @@
         return totalArea2 == areaUz2 || totalArea == areaUz;
     }
     
-   
-
     const addTopic = async() => {
       let myLatitude = 0 ,myLongitude = 0;
       

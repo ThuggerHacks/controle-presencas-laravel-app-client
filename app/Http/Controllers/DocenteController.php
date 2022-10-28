@@ -22,20 +22,33 @@ class DocenteController extends Controller
 
         $allFinishedLessons = Horario::where("termino","<",date("H:i:s"))->where("dia_semana",localtime(time(),true)['tm_wday'])->get();
 
+        $feriados = DB::select("SELECT * FROM tbl_feriados");
+
 
         foreach($allFinishedLessons as $linha){
-            $getFinisheLessons = Aula::where("fk_codigo_curso_disciplina",$linha->fk_codigo_disciplina)->where("data_aula",date("Y/m/d"))->first();
+            $getFinisheLessons = Aula::where("fk_codigo_curso_disciplina",$linha->fk_codigo_curso_disciplina)->where("data_aula",date("Y/m/d"))->first();
 
             $id = rand(111111,999999);
 
             if(!$getFinisheLessons){
                if($linha->termino < date("Y/m/d") && $linha->dia_semana == localtime(time(),true)['tm_wday'] && $linha->termino){
-                Aula::create([
+                //verify if it's not a holiday
+
+                $isHoliday = false;
+                foreach ($feriados as $holiday) {
+                   if($holiday->data_feriado == date("m/d")){
+                       $isHoliday = true;
+                       break;
+                   }
+                }
+
+               if(!$isHoliday)
+                    Aula::create([
                     "codigo_aula" => $id,
                     "data_aula" => date("Y/m/d"),
                     "tema_aula" => NULL,
                     "fk_codigo_curso_disciplina" => $linha->fk_codigo_curso_disciplina
-                ]);
+                    ]);
                }
             }
         }
@@ -71,7 +84,7 @@ class DocenteController extends Controller
 
         $disciplina = DB::select("SELECT tbl_disciplina.*,tbl_curso_disciplina.*,tbl_docente.* FROM tbl_disciplina,tbl_curso_disciplina,tbl_docente WHERE tbl_disciplina.codigo_disciplina = tbl_curso_disciplina.fk_tbl_disciplina_codigo_disciplina AND tbl_docente.codigo_docente = tbl_curso_disciplina.fk_codigo_docente AND tbl_curso_disciplina.codigo_curso_disciplina = ?", [base64_decode($cadeira)]); 
 
-        $presenca = Aula::where("fk_codigo_curso_disciplina",base64_decode($cadeira))->orderBy("data_aula","desc")->get();
+        $presenca = Aula::where("fk_codigo_curso_disciplina",base64_decode($cadeira))->where("data_aula","LIKE",date("Y")."%")->orderBy("data_aula","desc")->get();
 
         if(!$disciplina){
             return redirect()->back();
