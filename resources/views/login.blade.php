@@ -7,7 +7,7 @@
         @csrf
         <div class="content-uz">
            
-            <div class="container card col-md-3 com-md-12 p-4 ">
+            <div class="container card col-md-3 com-md-12 p-4 " style="width:320px">
                 <div class="uz-form-logo">
                     <img src="{{asset("assets/images/logo.png")}}" alt="" class="img-fluid uz-login-logo">
                     

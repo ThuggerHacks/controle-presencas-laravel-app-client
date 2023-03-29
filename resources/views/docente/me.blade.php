@@ -69,8 +69,8 @@
                                 <span class="fa fa-check"></span>
                             </td>
                             <td>
-                                <button class="btn btn-light" data-bs-target="#feedback" data-bs-toggle="modal">
-                                    <span >#</span>
+                                <button class="btn btn-light" >
+                                    <span class="fa  fa-check"></span>
                                 </button>
                             </td>
                         </tr>

@@ -65,6 +65,7 @@ class DocenteController extends Controller
         $horario  = DB::select("SELECT tbl_horario.*,tbl_curso_disciplina.*,tbl_disciplina_horario.* FROM tbl_horario,tbl_curso_disciplina,tbl_disciplina_horario WHERE tbl_disciplina_horario.fk_codigo_curso_disciplina = tbl_curso_disciplina.codigo_curso_disciplina AND tbl_horario.codigo_ = tbl_disciplina_horario.fk_tbl_horario_codigo_ AND tbl_curso_disciplina.codigo_curso_disciplina = ?",[base64_decode($cadeira)]);
 
         $presenca = Aula::where("fk_codigo_curso_disciplina",base64_decode($cadeira))->where("data_aula","LIKE",date("Y")."%")->orderBy("data_aula","desc")->get();
+        
 
         return view('docente.subject',["disciplina" => $disciplina,"horario" => $horario, "presenca" => $presenca,"cadeira"=>$cadeira]);
     }
@@ -213,7 +214,14 @@ class DocenteController extends Controller
         date_default_timezone_set("Africa/maputo");
 
         $cadeira = $request->cadeira;
+
+
         $year =  explode("-",$request->ano);
+
+        if(count($year) < 3){
+            return redirect()->back();
+        }
+
         $ano = $year[0]."/".$year[1]."/".$year[2];
         
         $disciplina = DB::select("SELECT tbl_disciplina.*,tbl_curso_disciplina.*,tbl_docente.* FROM tbl_disciplina,tbl_curso_disciplina,tbl_docente WHERE tbl_disciplina.codigo_disciplina = tbl_curso_disciplina.fk_tbl_disciplina_codigo_disciplina AND tbl_docente.codigo_docente = tbl_curso_disciplina.fk_codigo_docente AND tbl_curso_disciplina.codigo_curso_disciplina = ?", [base64_decode($cadeira)]);
@@ -229,7 +237,13 @@ class DocenteController extends Controller
         date_default_timezone_set("Africa/maputo");
 
         $cadeira = $request->cadeira;
+
         $year =  explode("-",$request->ano);
+
+        if(count($year) < 3){
+            return null;
+        }
+
         $ano = $year[0]."/".$year[1]."/".$year[2];
 
         $disciplina = DB::select("SELECT tbl_disciplina.*,tbl_curso_disciplina.*,tbl_docente.* FROM tbl_disciplina,tbl_curso_disciplina,tbl_docente WHERE tbl_disciplina.codigo_disciplina = tbl_curso_disciplina.fk_tbl_disciplina_codigo_disciplina AND tbl_docente.codigo_docente = tbl_curso_disciplina.fk_codigo_docente AND tbl_curso_disciplina.codigo_curso_disciplina = ?", [base64_decode($cadeira)]); 

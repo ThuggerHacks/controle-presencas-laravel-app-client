@@ -200,12 +200,11 @@ class DepartamentoController extends Controller
 
         if($explode[0] && $explode[1] && $explode[2]){
             $check = DB::select("SELECT * FROM tbl_feriados WHERE data_feriado = ?", [$holiday]);
-
             if($check){
                 return redirect()->back()->with("error","Esta data ja esta cadastrada como um feriado");
             }
 
-            DB::insert("INSERT INTO tbl_feriados (data_feriado,full_date) VALUES(?,?)", [$holiday,$full_date]);
+            $res = DB::insert("INSERT INTO tbl_feriados (data_feriado,full_date) VALUES(?,?)", [$holiday,$full_date]);
 
             return redirect()->back()->with("success","Novo feriado inserido");
 

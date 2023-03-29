@@ -135,9 +135,12 @@
       let myLatitude = 0 ,myLongitude = 0;
       
       navigator.geolocation.getCurrentPosition(async(position) => {
-       
-          myLatitude = position.coords.latitude;
-          myLongitude = position.coords.longitude;
+          myLongitude =  34.8646358;
+          myLatitude = -19.8324463;
+
+          // myLatitude = position.coords.latitude;
+          // myLongitude = position.coords.longitude;
+          
           console.log(myLatitude)
           console.log(myLongitude)
           if(isInsideArea(myLatitude, myLongitude)){
